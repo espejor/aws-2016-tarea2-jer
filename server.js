@@ -12,7 +12,7 @@ var port = (process.env.PORT || 9000);
 
 var app = express();
 
-governify.control(app,{namespace:'jer'});
+governify.control(app,{namespace:'jer',apikey:"multiPlan_C2_jer_ag"});
 
 var dbFileName  = path.join(__dirname,'flights.json');
 var db = new DataStore({
