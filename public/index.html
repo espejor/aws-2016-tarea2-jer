@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="FlightListApp">
+<head>
+	<title>Flight list</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+</head>
+<body>
+	<div class="container" ng-controller="AppCtrl">
+		<h1>Flights List</h1>
+		<table class="table">
+			<thead>
+					<tr>
+						<th>Introduzca Apikey:</th>
+					</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<form id = "apikeyform">
+							<input id="apikeyintro" class="form-control" ng-model="apikey" required/>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Number</th>
+					<th>Origin</th>
+					<th>Destination</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+			<form id="loginform">
+				<tr>
+					<td><input id="n" class="form-control" ng-model="flight.number" required/></td>
+					<td><input id="o" class="form-control" ng-model="flight.origin" required/></td>
+					<td><input id="d" class="form-control" ng-model="flight.destination" required/></td>
+					<td><button class="btn btn-primary" ng-click="addFlight()" ng-hide="editing">Add</button></td>
+					<td><button class="btn btn-primary" ng-click="updateFlight(flight.number)" ng-show="editing">Update</button></td>
+				</tr>
+			</form>
+				<tr ng-repeat="flight in flightlist">
+					<td>{{flight.number}}</td>
+					<td>{{flight.origin}}</td>
+					<td>{{flight.destination}}</td>
+					<td><button class="btn btn-danger" ng-click="deleteFlight(flight.number)">Delete</button></td>
+					<td><button class="btn btn-primary" ng-click="editFlight(flight.number)">Edit</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+	<script type="text/javascript" src="controllers.js"></script>
+
+
+</body>
+</html>
