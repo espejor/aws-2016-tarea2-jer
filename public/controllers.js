@@ -14,31 +14,25 @@ myApp.factory('Data', function () {
 	};
 });
 
-myApp.controller('URLCtrl', ['$scope','Data','$rootScope', function($scope,Data,$rootScope){
-	$scope.changeURL=function(){
-		Data.setKey($scope.key);
-		$rootScope.$broadcast('changeData');
-	}
-}]);
-
-
-
 
 myApp.controller('AppCtrl',['$scope','$http', 'Data',function($scope,$http,Data){
 	console.log("Controller initialized");
   $scope.editing = false;
-	var apikey="";
 
-	$scope.$on('changeData'), function(event){
-		apikey = "?apikey=" + Data.getKey();
-		refresh();
-	};
+	var apikey=	"";
+
 
 	var refresh = function (){
 		$http.get('/flights' + apikey).success(function (flights){
 			console.log('Data received successfully');
 			$scope.flightlist = flights;
 		});
+	}
+
+	$scope.changeURL=function(){
+		Data.setKey($scope.key);
+		apikey = "?apikey=" + Data.getKey();
+		refresh();
 	}
 
 
