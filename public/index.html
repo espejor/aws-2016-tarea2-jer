@@ -21,8 +21,9 @@
 			<tbody>
 				<tr>
 					<td>
-						<form id = "apikeyform">
-							<input id="apikeyintro" class="form-control" ng-model="apikey" required/>
+						<form id = "apikeyform" ng-controller="URLCtrl">
+							<input id="apikeyintro" class="form-control" ng-model="key" required/>
+							<button class="btn btn-primary" ng-click="changeURL()">Done</button>
 						</form>
 					</td>
 				</tr>

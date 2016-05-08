@@ -1,14 +1,41 @@
 var myApp = angular.module("FlightListApp",[]);
 
+myApp.factory('Data', function () {
+	var data = {
+		key : ''
+	};
+	return{
+		getKey: function(){
+			return data.key;
+		},
+		setKey: function(key){
+			data.key = key;
+		}
+	};
+});
+
+myApp.controller('URLCtrl', ['$scope','Data','$rootScope', function($scope,Data,$rootScope){
+	$scope.changeURL=function(){
+		Data.setKey($scope.key);
+		$rootScope.$broadcast('changeData');
+	}
+}]);
 
 
-myApp.controller('AppCtrl',['$scope','$http',function($scope,$http){
+
+
+myApp.controller('AppCtrl',['$scope','$http', 'Data',function($scope,$http,Data){
 	console.log("Controller initialized");
   $scope.editing = false;
-	$scope.apikey="multiPlan_C2_jer_ag";
+	var apikey="";
+
+	$scope.$on('changeData'), function(event){
+		apikey = "?apikey=" + Data.getKey();
+		refresh();
+	};
 
 	var refresh = function (){
-		$http.get('/flights/?apikey=' + $scope.apikey).success(function (flights){
+		$http.get('/flights' + apikey).success(function (flights){
 			console.log('Data received successfully');
 			$scope.flightlist = flights;
 		});
@@ -27,7 +54,7 @@ myApp.controller('AppCtrl',['$scope','$http',function($scope,$http){
 	$scope.addFlight = function(){
 		if (validate()) {
 			console.log("Inserting flight ...");
-			$http.post('/flights/?apikey=' + $scope.apikey,$scope.flight);
+			$http.post('/flights' + apikey,$scope.flight);
 			refresh();
 		}else{
 			console.log("Campos vacíos");
@@ -36,14 +63,14 @@ myApp.controller('AppCtrl',['$scope','$http',function($scope,$http){
 
 	$scope.deleteFlight = function(number){
 		console.log("Deleting flight with "+number);
-		$http.delete('/flights/'+number + '/?apikey=' + $scope.apikey);
+		$http.delete('/flights/'+number + apikey);
 		refresh();
 	}
 
 	$scope.editFlight = function(number){
 		$scope.editing = true;
 		console.log("Editing flight with "+number);
-		var f = '/flights/'+ number + '/?apikey=' + $scope.apikey;
+		var f = '/flights/'+ number + apikey;
 		$http.get(f).success(function (flight){
 			console.log('Data received successfully');
 			$scope.flight = flight;
@@ -54,7 +81,7 @@ myApp.controller('AppCtrl',['$scope','$http',function($scope,$http){
 	$scope.updateFlight = function(number){
 		if (validate()) {
 			$scope.editing = false;
-			var f = '/flights/'+ number + '/?apikey=' + $scope.apikey;
+			var f = '/flights/'+ number + apikey;
 			$http.put(f,$scope.flight);
 			refresh();
 		}else{
